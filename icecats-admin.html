@@ -128,16 +128,88 @@
         justify-content: space-between;
         gap: 12px;
       }
+
+      .icecats-brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.icecats-logo {
+  width: 56px;
+  height: 56px;
+  flex-shrink: 0;
+}
+.summary-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.stats-pill {
+  background: #0d1320;
+  border-radius: 999px;
+  padding: 8px 14px;
+  border: 1px solid #2a3443;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.stats-number {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #1ed0f3;
+}
+
+.stats-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #a4b0be;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  margin-top: 10px;
+}
+
+thead th {
+  position: sticky;
+  top: 0;
+  background: #121826;
+  z-index: 1;
+}
+
+tr:nth-child(even) {
+  background: rgba(255,255,255,0.02);
+}
+
+td, th {
+  padding: 6px 8px;
+}
+
+
     </style>
   </head>
   <body>
     <div class="wrap">
       <div class="topbar">
-        <div>
-          <h1>Pee Dee IceCats Admin</h1>
-          <p>View submissions from the IceCats interest form.</p>
+        <div class="icecats-brand">
+          <img
+            src="/assets/icecats-logo.png"
+            alt="Pee Dee IceCats logo"
+            class="icecats-logo"
+          />
+          <div>
+            <h1>Pee Dee IceCats Admin</h1>
+            <p>View submissions from the IceCats interest form.</p>
+          </div>
         </div>
         <button id="logout-btn" style="display: none">Log out</button>
+      </div>
       </div>
 
       <!-- LOGIN CARD -->
@@ -163,23 +235,17 @@
       </div>
 
       <!-- DATA CARD -->
-      <div id="data-card" class="card" style="display: none">
-        <div
-          style="
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            justify-content: space-between;
-          "
-        >
-          <div>
-            <h2 style="margin: 0">IceCats interest submissions</h2>
-            <p style="margin-top: 2px">
-              Newest submissions first. Refresh page to reload.
-            </p>
-          </div>
-          <span id="count-badge" class="badge">0 entries</span>
-        </div>
+      <div id="data-card" class="card" style="display:none;">
+  <div class="summary-row">
+    <div>
+      <h2 style="margin:0;">IceCats interest submissions</h2>
+      <p style="margin-top:2px;">Newest submissions first. Refresh page to reload.</p>
+    </div>
+    <div class="stats-pill">
+      <div class="stats-number" id="count-badge">0</div>
+      <div class="stats-label">total submissions</div>
+    </div>
+  </div>
 
         <div style="overflow-x: auto; margin-top: 8px">
           <table>
@@ -263,8 +329,8 @@
             rows.appendChild(tr);
           });
 
-          countBadge.textContent =
-            data.length + (data.length === 1 ? " entry" : " entries");
+          countBadge.textContent = data.length.toString();
+
         }
 
         async function showForSession() {
