@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Pee Dee IceCats Interest | ScreenITology</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Interest form for Pee Dee IceCats ticket packages, theme nights, suite rentals, charity events and more."
+    />
+    <style>
+      body {
+        margin: 0;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+          sans-serif;
+        background: #0b0f16;
+        color: #f6f8fb;
+      }
+      a {
+        color: #1ed0f3;
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+      .wrap {
+        max-width: 860px;
+        margin: 0 auto;
+        padding: 24px;
+      }
+      .card {
+        background: #121826;
+        border: 1px solid #1f2734;
+        border-radius: 16px;
+        padding: 20px;
+        margin-top: 16px;
+      }
+      label {
+        font-size: 14px;
+        display: block;
+        margin-bottom: 10px;
+      }
+      input[type="text"],
+      input[type="email"],
+      textarea {
+        width: 100%;
+        padding: 10px;
+        border-radius: 8px;
+        border: 1px solid #2a3443;
+        background: #0e1420;
+        color: #eaf1ff;
+        margin-top: 4px;
+      }
+      .checkbox-group {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 6px 16px;
+        margin-top: 6px;
+      }
+      .checkbox-group label {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        margin: 0;
+      }
+      input[type="checkbox"] {
+        width: 16px;
+        height: 16px;
+        accent-color: #1ed0f3;
+      }
+      .btn {
+        background: #1ed0f3;
+        color: #041018;
+        border: 0;
+        border-radius: 12px;
+        padding: 10px 16px;
+        font-weight: 700;
+        cursor: pointer;
+        margin-top: 12px;
+      }
+      .btn:hover {
+        opacity: 0.9;
+      }
+      .notice {
+        margin: 12px 0;
+        padding: 10px 12px;
+        border-radius: 8px;
+        background: #102032;
+        border: 1px solid #1ed0f3;
+        color: #d7f8ff;
+        font-size: 14px;
+      }
+      .topbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+      }
+      #admin-link {
+        font-size: 13px;
+        border-radius: 999px;
+        border: 1px solid #2a3443;
+        padding: 6px 12px;
+      }
+      #admin-link:hover {
+        border-color: #1ed0f3;
+        color: #1ed0f3;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <div class="topbar">
+        <h1 style="margin: 0">Pee Dee IceCats Interest</h1>
+        <!-- This will go to the IceCats admin login page we’ll build next -->
+        <a id="admin-link" href="/icecats-admin.html">Admin login</a>
+      </div>
+      <p
+        style="
+          color: #a4b0be;
+          max-width: 60ch;
+          font-size: 14px;
+          margin-top: 6px;
+        "
+      >
+        Let us know what you’re interested in for Pee Dee IceCats hockey. A team
+        member will follow up with details and availability.
+      </p>
+
+      <div id="thanks" class="notice" style="display: none">
+        Thank you! Your interest has been submitted. A member of the IceCats or
+        ScreenITology team will follow up.
+      </div>
+
+      <div class="card">
+        <form id="icecats-form" autocomplete="on">
+          <label>
+            Name
+            <input type="text" name="name" required />
+          </label>
+
+          <label>
+            Email
+            <input type="email" name="email" required />
+          </label>
+
+          <label>
+            Organization / Affiliation
+            <input type="text" name="org" />
+          </label>
+
+          <label>
+            I’m interested in:
+            <div class="checkbox-group">
+              <label
+                ><input type="checkbox" name="interest" value="group tickets" />
+                Group tickets</label
+              >
+              <label
+                ><input
+                  type="checkbox"
+                  name="interest"
+                  value="season tickets"
+                />
+                Season tickets</label
+              >
+              <label
+                ><input type="checkbox" name="interest" value="theme night" />
+                Theme night</label
+              >
+              <label
+                ><input type="checkbox" name="interest" value="suite rental" />
+                Suite rental</label
+              >
+              <label
+                ><input
+                  type="checkbox"
+                  name="interest"
+                  value="concourse booth"
+                />
+                Concourse booth</label
+              >
+              <label
+                ><input type="checkbox" name="interest" value="charity event" />
+                Charity event</label
+              >
+            </div>
+          </label>
+
+          <label>
+            Notes
+            <textarea
+              name="notes"
+              rows="5"
+              placeholder="Tell us a bit more about what you’re looking for."
+            ></textarea>
+          </label>
+
+          <!-- honeypot -->
+          <div style="display: none">
+            <input name="hp" />
+          </div>
+
+          <button class="btn" type="submit">Submit interest</button>
+        </form>
+      </div>
+    </div>
+
+    <script>
+      (function () {
+        const SUPABASE_URL = "https://mltzrwltaheaunrdmyfb.supabase.co";
+        const SUPABASE_ANON_KEY =
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1sdHpyd2x0YWhlYXVucmRteWZiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ2NDk3MjgsImV4cCI6MjA4MDIyNTcyOH0.B7MvOu1wZ5LsRis5f7B-srJsaadOmN7FdV4PlNQvn2E";
+
+        const form = document.getElementById("icecats-form");
+        const thanks = document.getElementById("thanks");
+
+        if (!form) return;
+
+        form.addEventListener("submit", async function (e) {
+          e.preventDefault();
+
+          if (form.hp && form.hp.value) return; // honeypot
+
+          const checked = Array.from(
+            form.querySelectorAll('input[name="interest"]:checked')
+          ).map((el) => el.value);
+
+          const payload = {
+            name: form.name.value.trim(),
+            email: form.email.value.trim(),
+            org: form.org.value.trim(),
+            interests: checked, // this will go into jsonb
+            notes: form.notes.value.trim(),
+          };
+
+          if (!payload.name || !payload.email) {
+            alert("Please enter your name and email.");
+            return;
+          }
+
+          try {
+            const res = await fetch(
+              SUPABASE_URL + "/rest/v1/icecats_submissions",
+              {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                  apikey: SUPABASE_ANON_KEY,
+                  Authorization: "Bearer " + SUPABASE_ANON_KEY,
+                  Prefer: "return=minimal",
+                },
+                body: JSON.stringify(payload),
+              }
+            );
+
+            if (!res.ok) {
+              console.error(await res.text());
+              alert(
+                "There was a problem submitting your interest. Please try again or contact the team directly."
+              );
+              return;
+            }
+
+            form.reset();
+            if (thanks) thanks.style.display = "block";
+          } catch (err) {
+            console.error(err);
+            alert(
+              "There was a problem submitting your interest. Please try again later."
+            );
+          }
+        });
+      })();
+    </script>
+  </body>
+</html>
