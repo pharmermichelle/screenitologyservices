@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Pee Dee IceCats Admin | ScreenITology</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex,nofollow" />
+    <style>
+      body {
+        margin: 0;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+          sans-serif;
+        background: #0b0f16;
+        color: #f6f8fb;
+      }
+      .wrap {
+        max-width: 960px;
+        margin: 0 auto;
+        padding: 24px;
+      }
+      h1 {
+        margin: 0 0 4px;
+      }
+      p {
+        margin: 0 0 12px;
+        color: #a4b0be;
+        font-size: 14px;
+      }
+      .card {
+        background: #121826;
+        border: 1px solid #1f2734;
+        border-radius: 16px;
+        padding: 20px;
+        margin-top: 16px;
+      }
+      label {
+        display: block;
+        font-size: 14px;
+        margin-bottom: 10px;
+      }
+      input[type="email"],
+      input[type="password"] {
+        width: 100%;
+        padding: 10px;
+        border-radius: 8px;
+        border: 1px solid #2a3443;
+        background: #0e1420;
+        color: #eaf1ff;
+        margin-top: 4px;
+      }
+      .btn {
+        background: #1ed0f3;
+        color: #041018;
+        border: 0;
+        border-radius: 12px;
+        padding: 10px 16px;
+        font-weight: 700;
+        cursor: pointer;
+        margin-top: 10px;
+      }
+      .btn:hover {
+        opacity: 0.9;
+      }
+      #logout-btn {
+        font-size: 13px;
+        background: transparent;
+        border-radius: 999px;
+        border: 1px solid #2a3443;
+        padding: 6px 12px;
+        color: #a4b0be;
+        cursor: pointer;
+      }
+      #logout-btn:hover {
+        border-color: #1ed0f3;
+        color: #1ed0f3;
+      }
+      .error {
+        color: #ff6b81;
+        font-size: 13px;
+        margin-top: 8px;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 13px;
+        margin-top: 8px;
+      }
+      th,
+      td {
+        padding: 6px 8px;
+        border-bottom: 1px solid #1f2734;
+        vertical-align: top;
+        text-align: left;
+      }
+      th {
+        color: #a4b0be;
+        white-space: nowrap;
+      }
+      tr:nth-child(even) {
+        background: rgba(255, 255, 255, 0.02);
+      }
+      .badge {
+        display: inline-block;
+        padding: 2px 8px;
+        border-radius: 999px;
+        background: #1f2933;
+        color: #a4b0be;
+        font-size: 11px;
+      }
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <div class="topbar">
+        <div>
+          <h1>Pee Dee IceCats Admin</h1>
+          <p>View submissions from the IceCats interest form.</p>
+        </div>
+        <button id="logout-btn" style="display: none">Log out</button>
+      </div>
+
+      <!-- LOGIN CARD -->
+      <div id="login-card" class="card">
+        <h2 style="margin-top: 0">Admin login</h2>
+        <form id="login-form">
+          <label>
+            Email
+            <input type="email" name="email" required autocomplete="username" />
+          </label>
+          <label>
+            Password
+            <input
+              type="password"
+              name="password"
+              required
+              autocomplete="current-password"
+            />
+          </label>
+          <button class="btn" type="submit">Log in</button>
+          <div id="login-error" class="error"></div>
+        </form>
+      </div>
+
+      <!-- DATA CARD -->
+      <div id="data-card" class="card" style="display: none">
+        <div
+          style="
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            justify-content: space-between;
+          "
+        >
+          <div>
+            <h2 style="margin: 0">IceCats interest submissions</h2>
+            <p style="margin-top: 2px">
+              Newest submissions first. Refresh page to reload.
+            </p>
+          </div>
+          <span id="count-badge" class="badge">0 entries</span>
+        </div>
+
+        <div style="overflow-x: auto; margin-top: 8px">
+          <table>
+            <thead>
+              <tr>
+                <th>Created</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Org / Affiliation</th>
+                <th>Interests</th>
+                <th>Notes</th>
+              </tr>
+            </thead>
+            <tbody id="rows">
+              <!-- rows injected by JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Supabase JS v2 from CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+      (async function () {
+        const SUPABASE_URL = "YOUR_SUPABASE_URL_HERE";
+        const SUPABASE_ANON_KEY = "YOUR_ANON_KEY_HERE";
+
+        const { createClient } = window.supabase;
+        const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        const loginCard = document.getElementById("login-card");
+        const dataCard = document.getElementById("data-card");
+        const loginForm = document.getElementById("login-form");
+        const loginError = document.getElementById("login-error");
+        const rows = document.getElementById("rows");
+        const countBadge = document.getElementById("count-badge");
+        const logoutBtn = document.getElementById("logout-btn");
+
+        async function loadSubmissions() {
+          const { data, error } = await supabase
+            .from("icecats_submissions")
+            .select("created_at, name, email, org, interests, notes")
+            .order("created_at", { ascending: false });
+
+          if (error) {
+            console.error(error);
+            loginError.textContent = "Error loading submissions.";
+            return;
+          }
+
+          rows.innerHTML = "";
+          if (!data || data.length === 0) {
+            const tr = document.createElement("tr");
+            const td = document.createElement("td");
+            td.colSpan = 6;
+            td.textContent = "No submissions yet.";
+            td.style.color = "#a4b0be";
+            tr.appendChild(td);
+            rows.appendChild(tr);
+            countBadge.textContent = "0 entries";
+            return;
+          }
+
+          data.forEach((row) => {
+            const tr = document.createElement("tr");
+            const created = new Date(row.created_at).toLocaleString();
+            const interests = Array.isArray(row.interests)
+              ? row.interests.join(", ")
+              : row.interests || "";
+
+            tr.innerHTML = `
+            <td>${created}</td>
+            <td>${row.name || ""}</td>
+            <td>${row.email || ""}</td>
+            <td>${row.org || ""}</td>
+            <td>${interests}</td>
+            <td>${(row.notes || "").replace(/\n/g, "<br>")}</td>
+          `;
+            rows.appendChild(tr);
+          });
+
+          countBadge.textContent =
+            data.length + (data.length === 1 ? " entry" : " entries");
+        }
+
+        async function showForSession() {
+          const { data } = await supabase.auth.getSession();
+          if (data.session) {
+            // logged in
+            loginCard.style.display = "none";
+            dataCard.style.display = "block";
+            logoutBtn.style.display = "inline-block";
+            loginError.textContent = "";
+            await loadSubmissions();
+          } else {
+            // logged out
+            loginCard.style.display = "block";
+            dataCard.style.display = "none";
+            logoutBtn.style.display = "none";
+          }
+        }
+
+        // Login handler
+        loginForm.addEventListener("submit", async (e) => {
+          e.preventDefault();
+          loginError.textContent = "";
+
+          const email = loginForm.email.value.trim();
+          const password = loginForm.password.value;
+
+          const { error } = await supabase.auth.signInWithPassword({
+            email,
+            password,
+          });
+
+          if (error) {
+            console.error(error);
+            loginError.textContent =
+              "Login failed. Please check your email and password.";
+            return;
+          }
+
+          await showForSession();
+        });
+
+        // Logout handler
+        logoutBtn.addEventListener("click", async () => {
+          await supabase.auth.signOut();
+          await showForSession();
+        });
+
+        // On initial load, see if there's already a session
+        await showForSession();
+      })();
+    </script>
+  </body>
+</html>
