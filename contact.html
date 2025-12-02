@@ -98,13 +98,7 @@
       </div>
 
       <div class="card">
-        <!-- FORM: sent to Formspree instead of PHP -->
-        <!-- If you want a different Formspree form ID, replace the action URL below -->
-        <form
-          method="POST"
-          action="https://formspree.io/f/xblvjqpw"
-          autocomplete="on"
-        >
+        <form id="contact-form" autocomplete="on">
           <div
             class="grid"
             style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px"
@@ -232,6 +226,71 @@
           if (el) el.style.display = "block";
         }
         document.getElementById("yc").textContent = new Date().getFullYear();
+      })();
+    </script>
+    <script>
+      (function () {
+        const SUPABASE_URL = "https://mltzrwltaheaunrdmyfb.supabase.co";
+        const SUPABASE_ANON_KEY =
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1sdHpyd2x0YWhlYXVucmRteWZiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ2NDk3MjgsImV4cCI6MjA4MDIyNTcyOH0.B7MvOu1wZ5LsRis5f7B-srJsaadOmN7FdV4PlNQvn2E";
+
+        const form = document.getElementById("contact-form");
+        if (!form) return;
+
+        form.addEventListener("submit", async function (e) {
+          e.preventDefault();
+
+          // Honeypot for bots
+          if (form.hp && form.hp.value) return;
+
+          const data = {
+            name: form.name.value.trim(),
+            email: form.email.value.trim(),
+            org: form.org.value.trim(),
+            message: form.message.value.trim(),
+            meta: {
+              userAgent: navigator.userAgent,
+              url: window.location.href,
+            },
+          };
+
+          if (!data.name || !data.email || !data.message) {
+            alert("Please fill in your name, email, and message.");
+            return;
+          }
+
+          try {
+            const res = await fetch(
+              SUPABASE_URL + "/rest/v1/contact_submissions",
+              {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                  apikey: SUPABASE_ANON_KEY,
+                  Authorization: "Bearer " + SUPABASE_ANON_KEY,
+                  Prefer: "return=minimal",
+                },
+                body: JSON.stringify(data),
+              }
+            );
+
+            if (!res.ok) {
+              console.error(await res.text());
+              alert(
+                "There was a problem sending your message. Please email screenITology@gmail.com directly."
+              );
+              return;
+            }
+
+            // Success
+            form.reset();
+            const thanks = document.getElementById("thanks");
+            if (thanks) thanks.style.display = "block";
+          } catch (error) {
+            console.error(error);
+            alert("There was an issue sending your message.");
+          }
+        });
       })();
     </script>
   </body>
