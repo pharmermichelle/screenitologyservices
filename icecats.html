@@ -107,6 +107,10 @@
         padding: 20px;
         margin-top: 16px;
       }
+      .form-inner {
+        max-width: 720px;
+        margin: 0 auto;
+      }
 
       label {
         font-size: 14px;
@@ -174,6 +178,38 @@
         color: #d7f8ff;
         font-size: 14px;
       }
+      .icecats-footer {
+        margin-top: 24px;
+        padding-top: 16px;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px 24px;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 0.85rem;
+        color: var(--icecats-grey);
+      }
+
+      .footer-links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+
+      .icecats-footer a {
+        color: var(--icecats-blue);
+        text-decoration: none;
+      }
+
+      .icecats-footer a:hover {
+        text-decoration: underline;
+      }
+
+      .footer-admin {
+        font-size: 0.8rem;
+        opacity: 0.85;
+      }
     </style>
   </head>
   <body>
@@ -193,9 +229,6 @@
             </p>
           </div>
         </div>
-        <a id="admin-link" href="/icecats-admin.html" class="admin-link"
-          >Admin login</a
-        >
       </header>
 
       <div id="thanks" class="notice" style="display: none">
@@ -204,77 +237,112 @@
       </div>
 
       <div class="card">
-        <form id="icecats-form" autocomplete="on">
-          <label>
-            Name
-            <input type="text" name="name" required />
-          </label>
+        <div class="form-inner">
+          <form id="icecats-form" autocomplete="on">
+            <label>
+              Name
+              <input type="text" name="name" required />
+            </label>
 
-          <label>
-            Email
-            <input type="email" name="email" required />
-          </label>
+            <label>
+              Email
+              <input type="email" name="email" required />
+            </label>
 
-          <label>
-            Organization / Affiliation
-            <input type="text" name="org" />
-          </label>
+            <label>
+              Organization / Affiliation
+              <input type="text" name="org" />
+            </label>
 
-          <label>
-            I’m interested in:
-            <div class="checkbox-group">
-              <label
-                ><input type="checkbox" name="interest" value="group tickets" />
-                Group tickets</label
-              >
-              <label
-                ><input
-                  type="checkbox"
-                  name="interest"
-                  value="season tickets"
-                />
-                Season tickets</label
-              >
-              <label
-                ><input type="checkbox" name="interest" value="theme night" />
-                Theme night</label
-              >
-              <label
-                ><input type="checkbox" name="interest" value="suite rental" />
-                Suite rental</label
-              >
-              <label
-                ><input
-                  type="checkbox"
-                  name="interest"
-                  value="concourse booth"
-                />
-                Concourse booth</label
-              >
-              <label
-                ><input type="checkbox" name="interest" value="charity event" />
-                Charity event</label
-              >
+            <label>
+              I’m interested in:
+              <div class="checkbox-group">
+                <label
+                  ><input
+                    type="checkbox"
+                    name="interest"
+                    value="group tickets"
+                  />
+                  Group tickets</label
+                >
+                <label
+                  ><input
+                    type="checkbox"
+                    name="interest"
+                    value="season tickets"
+                  />
+                  Season tickets</label
+                >
+                <label
+                  ><input type="checkbox" name="interest" value="theme night" />
+                  Theme night</label
+                >
+                <label
+                  ><input
+                    type="checkbox"
+                    name="interest"
+                    value="suite rental"
+                  />
+                  Suite rental</label
+                >
+                <label
+                  ><input
+                    type="checkbox"
+                    name="interest"
+                    value="concourse booth"
+                  />
+                  Concourse booth</label
+                >
+                <label
+                  ><input
+                    type="checkbox"
+                    name="interest"
+                    value="charity event"
+                  />
+                  Charity event</label
+                >
+              </div>
+            </label>
+
+            <label>
+              Notes
+              <textarea
+                name="notes"
+                rows="5"
+                placeholder="Tell us a bit more about what you’re looking for."
+              ></textarea>
+            </label>
+
+            <!-- honeypot -->
+            <div style="display: none">
+              <input name="hp" />
             </div>
-          </label>
 
-          <label>
-            Notes
-            <textarea
-              name="notes"
-              rows="5"
-              placeholder="Tell us a bit more about what you’re looking for."
-            ></textarea>
-          </label>
-
-          <!-- honeypot -->
-          <div style="display: none">
-            <input name="hp" />
-          </div>
-
-          <button class="btn" type="submit">Submit interest</button>
-        </form>
+            <button class="btn" type="submit">Submit interest</button>
+          </form>
+        </div>
       </div>
+      <footer class="icecats-footer">
+        <div class="footer-links">
+          <a
+            href="https://www.peedeeprohockey.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Pee Dee IceCats official site
+          </a>
+          <a
+            href="https://www.peedeeprohockey.com/stats#/team-schedule?team_id=555273"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Team schedule
+          </a>
+        </div>
+        <div class="footer-admin">
+          <a href="/icecats-admin.html">Admin login</a>
+        </div>
+      </footer>
     </div>
 
     <script>
