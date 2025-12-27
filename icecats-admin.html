@@ -326,7 +326,7 @@ td, th {
         const accountActions = document.getElementById("account-actions");
 
 
-        
+
         async function loadSubmissions() {
           const { data, error } = await supabase
             .from("icecats_submissions")
@@ -431,7 +431,7 @@ resetLink.addEventListener("click", async (e) => {
   }
 
   const { error } = await supabase.auth.resetPasswordForEmail(email, {
-    redirectTo: "https://screenitology.com/reset-password.html"
+redirectTo: "https://www.screenitology.com/reset-password.html"
   });
 
   if (error) {
