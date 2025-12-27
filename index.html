@@ -252,5 +252,24 @@
         </div>
       </section>
     </div>
+
+    <!-- Supabase recovery redirect handler -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+      (async () => {
+        const supabase = window.supabase.createClient(
+          "https://mltzrwltaheaunrdmyfb.supabase.co",
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1sdHpyd2x0YWhlYXVucmRteWZiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ2NDk3MjgsImV4cCI6MjA4MDIyNTcyOH0.B7MvOu1wZ5LsRis5f7B-srJsaadOmN7FdV4PlNQvn2E"
+        );
+
+        // Supabase uses URL hash for recovery
+        if (window.location.hash.includes("type=recovery")) {
+          // Small delay to ensure session is established
+          setTimeout(() => {
+            window.location.href = "/reset-password.html";
+          }, 50);
+        }
+      })();
+    </script>
   </body>
 </html>
