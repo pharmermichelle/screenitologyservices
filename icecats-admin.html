@@ -196,6 +196,11 @@ tr:nth-child(even) {
 td, th {
   padding: 6px 8px;
 }
+#account-actions {
+  display: flex;
+  align-items: center;
+}
+
 
 
     </style>
@@ -214,7 +219,25 @@ td, th {
             <p>View submissions from the IceCats interest form.</p>
           </div>
         </div>
-        <button id="logout-btn" style="display: none">Log out</button>
+<div id="account-actions" style="display:none; gap:10px;">
+  <a
+    href="/set-password.html"
+    id="change-password-link"
+    style="
+      font-size:13px;
+      color:#1ed0f3;
+      text-decoration:none;
+      border:1px solid #2a3443;
+      padding:6px 12px;
+      border-radius:999px;
+    "
+  >
+    Change password
+  </a>
+
+  <button id="logout-btn">Log out</button>
+</div>
+
       </div>
       
 
@@ -235,8 +258,17 @@ td, th {
               autocomplete="current-password"
             />
           </label>
-          <button class="btn" type="submit">Log in</button>
-          <div id="login-error" class="error"></div>
+<button class="btn" type="submit">Log in</button>
+
+<div style="margin-top:8px;">
+  <a href="#" id="reset-link" style="font-size:13px;color:#1ed0f3;">
+    Forgot password?
+  </a>
+</div>
+
+<div id="login-error" class="error"></div>
+<div id="reset-msg" class="error"></div>
+
         </form>
       </div></div>
 
@@ -291,6 +323,8 @@ td, th {
         const rows = document.getElementById("rows");
         const countBadge = document.getElementById("count-badge");
         const logoutBtn = document.getElementById("logout-btn");
+        const accountActions = document.getElementById("account-actions");
+
 
         async function loadSubmissions() {
           const { data, error } = await supabase
@@ -345,14 +379,16 @@ td, th {
             // logged in
             loginCard.style.display = "none";
             dataCard.style.display = "block";
-            logoutBtn.style.display = "inline-block";
+accountActions.style.display = "flex";
+
             loginError.textContent = "";
             await loadSubmissions();
           } else {
             // logged out
             loginCard.style.display = "block";
             dataCard.style.display = "none";
-            logoutBtn.style.display = "none";
+accountActions.style.display = "none";
+
           }
         }
 
@@ -378,6 +414,37 @@ td, th {
 
           await showForSession();
         });
+
+        const resetLink = document.getElementById("reset-link");
+const resetMsg = document.getElementById("reset-msg");
+
+resetLink.addEventListener("click", async (e) => {
+  e.preventDefault();
+  resetMsg.textContent = "";
+
+  const email = loginForm.email.value.trim();
+
+  if (!email) {
+    resetMsg.textContent = "Please enter your email above to reset your password.";
+    return;
+  }
+
+  const { error } = await supabase.auth.resetPasswordForEmail(email, {
+    redirectTo: "https://screenitology.com/reset-password.html"
+  });
+
+  if (error) {
+    console.error(error);
+    resetMsg.textContent =
+      "Could not send reset email. Please check the email address.";
+    return;
+  }
+
+  resetMsg.style.color = "#1ed0f3";
+  resetMsg.textContent =
+    "Reset email sent. Check your inbox to set a new password.";
+});
+
 
         // Logout handler
         logoutBtn.addEventListener("click", async () => {
