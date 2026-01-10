@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Southern Layers 3D Printing</title>
+
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      :root {
+        --yellow: #f2c94c;
+        --blue: #2f5d73;
+        --bg: linear-gradient(180deg, #1a232b 0%, #0f1a20 100%);
+        --text: #f5f5f5;
+        --card: rgba(30, 54, 66, 0.7);
+        --border: rgba(255, 255, 255, 0.12);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Inter", system-ui, sans-serif;
+        background: radial-gradient(
+            circle at top right,
+            rgba(242, 201, 76, 0.18),
+            transparent 45%
+          ),
+          radial-gradient(
+            circle at bottom left,
+            rgba(47, 93, 115, 0.18),
+            transparent 45%
+          ),
+          var(--bg);
+        color: var(--text);
+        transition: background 0.4s ease, color 0.4s ease;
+        perspective: 1200px;
+      }
+
+      header {
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        backdrop-filter: blur(12px);
+        background: linear-gradient(
+          135deg,
+          rgba(47, 93, 115, 0.85),
+          rgba(242, 201, 76, 0.85)
+        );
+        color: #fff;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem 2rem;
+      }
+
+      header img {
+        height: 56px;
+        border-radius: 50%;
+        background: #fff;
+        padding: 4px;
+      }
+
+      nav a {
+        color: #fff;
+        margin-left: 1.2rem;
+        text-decoration: none;
+        font-weight: 600;
+      }
+
+      .toggle {
+        margin-left: 1rem;
+        cursor: pointer;
+        border: 1px solid rgba(255, 255, 255, 0.6);
+        background: rgba(255, 255, 255, 0.15);
+        color: #fff;
+        padding: 0.4rem 0.9rem;
+        border-radius: 999px;
+        font-weight: 600;
+      }
+
+      main {
+        max-width: 1200px;
+        margin: auto;
+        padding: 4rem 1.5rem;
+      }
+      section {
+        margin-bottom: 6rem;
+        position: relative;
+      }
+
+      .hero {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 3rem;
+        align-items: center;
+      }
+
+      .card {
+        background: var(--card);
+        backdrop-filter: blur(14px);
+        border-radius: 16px;
+        padding: 2.5rem;
+        border: 1px solid var(--border);
+        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+        transform-style: preserve-3d;
+        transition: transform 0.4s ease, box-shadow 0.4s ease;
+      }
+
+      .card:hover {
+        transform: translateY(-6px) rotateX(3deg);
+        box-shadow: 0 40px 80px rgba(0, 0, 0, 0.35);
+      }
+
+      /* PROCESS SECTION */
+      .process-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 2rem;
+        position: relative;
+      }
+
+      .process-step {
+        text-align: center;
+        opacity: 0;
+        transform: translateY(30px);
+        transition: all 0.6s ease;
+      }
+
+      .process-step.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .process-icon {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+      }
+
+      .process-grid::before {
+        content: "";
+        position: absolute;
+        left: 50%;
+        top: 0;
+        bottom: 0;
+        width: 2px;
+        background: linear-gradient(
+          to bottom,
+          transparent,
+          rgba(255, 255, 255, 0.15),
+          transparent
+        );
+        transform: translateX(-50%);
+        pointer-events: none;
+      }
+
+      footer {
+        background: rgba(0, 0, 0, 0.2);
+        padding: 2rem;
+        text-align: center;
+      }
+
+      /* CTA BUTTON */
+      .cta {
+        display: inline-block;
+        margin-top: 1.5rem;
+        padding: 0.85rem 1.8rem;
+        border-radius: 999px;
+        font-weight: 700;
+        text-decoration: none;
+        color: #000;
+        background: var(--yellow);
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .cta:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.45);
+      }
+
+      /* GALLERY */
+      .gallery {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 1.5rem;
+        margin-top: 2rem;
+      }
+
+      .gallery-item {
+        position: relative;
+        height: 220px;
+        border-radius: 16px;
+        background: linear-gradient(
+          135deg,
+          rgba(47, 93, 115, 0.85),
+          rgba(242, 201, 76, 0.85)
+        );
+        overflow: hidden;
+        transform-style: preserve-3d;
+        transition: transform 0.3s ease;
+      }
+
+      .gallery-item:hover {
+        transform: translateY(-6px) rotateX(4deg) rotateY(-4deg);
+      }
+
+      .gallery-overlay {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        color: #fff;
+        background: rgba(0, 0, 0, 0.55);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        text-align: center;
+        padding: 1rem;
+      }
+
+      .gallery-item:hover .gallery-overlay {
+        opacity: 1;
+      }
+
+      /* FORM STYLING */
+      form {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.25rem;
+        max-width: 100%;
+      }
+
+      form textarea {
+        grid-column: 1 / -1;
+        min-height: 160px;
+        resize: vertical;
+      }
+
+      form input[type="file"] {
+        grid-column: 1 / -1;
+      }
+
+      .submit {
+        grid-column: 1 / -1;
+        justify-self: flex-start;
+        min-width: 240px;
+      }
+
+      input,
+      textarea {
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 0.75rem 0.9rem;
+        color: var(--text);
+        font-size: 1rem;
+      }
+
+      input::placeholder,
+      textarea::placeholder {
+        color: rgba(255, 255, 255, 0.6);
+      }
+
+      .submit {
+        margin-top: 1rem;
+        align-self: flex-start;
+        background: linear-gradient(135deg, var(--blue), var(--yellow));
+        color: #000;
+        border: none;
+        padding: 0.8rem 1.6rem;
+        border-radius: 999px;
+        font-weight: 700;
+        cursor: pointer;
+      }
+
+      /* FILAMENT LAYER LINES */
+      .layer-lines {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        background: repeating-linear-gradient(
+          to bottom,
+          rgba(255, 255, 255, 0.04),
+          rgba(255, 255, 255, 0.04) 1px,
+          transparent 1px,
+          transparent 6px
+        );
+        z-index: 0;
+      }
+    </style>
+  </head>
+  <body data-theme="dark">
+    <header>
+      <div style="display: flex; align-items: center; gap: 1rem">
+        <img src="client-assets\SL3D_logo.jpg" alt="Southern Layers Logo" />
+        <strong>Southern Layers 3D Printing</strong>
+      </div>
+      <nav>
+        <a href="#home">Home</a>
+        <a href="#gallery">Gallery</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </header>
+
+    <main>
+      <!-- LAYER LINES BACKGROUND -->
+      <div class="layer-lines"></div>
+      <section id="home" class="hero">
+        <div>
+          <h1>Precision 3D Printing,<br />Built in Layers</h1>
+          <p>
+            Southern Layers 3D Printing, LLC delivers high-quality bulk 3D
+            printed products including keychains, necklaces, promotional items,
+            and custom designs.
+          </p>
+          <p>
+            <strong
+              >Bulk orders welcome. Consistent, repeatable quality.</strong
+            >
+          </p>
+          <ul style="margin-top: 1rem; line-height: 1.7">
+            <li>Ideal for events, teams, and promotions</li>
+            <li>Based in South Carolina</li>
+            <li>Veteran-owned small business</li>
+          </ul>
+          <a href="#contact" class="cta">Request a Quote</a>
+        </div>
+        <div class="hero-visual">
+          <img
+            src="client-assets\SL3D_logo.jpg"
+            alt="Floating Logo"
+            style="
+              max-width: 280px;
+              border-radius: 50%;
+              box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+            "
+          />
+        </div>
+      </section>
+
+      <!-- STRONG CTA BAND -->
+      <section style="margin: 0 0 6rem 0">
+        <div
+          class="card"
+          style="
+            text-align: center;
+            background: linear-gradient(
+              135deg,
+              rgba(47, 93, 115, 0.85),
+              rgba(242, 201, 76, 0.85)
+            );
+            color: #fff;
+          "
+        >
+          <h2 style="margin-top: 0">Need bulk pricing or a custom design?</h2>
+          <p style="font-size: 1.1rem">
+            Tell us what you need and we’ll quote it.
+          </p>
+          <a href="#contact" class="cta" style="background: #fff; color: #000"
+            >Request a Quote</a
+          >
+        </div>
+      </section>
+
+      <section id="gallery">
+        <h2>Product Showcase</h2>
+        <div class="gallery">
+          <div class="gallery-item">
+            <div class="gallery-overlay">Bulk Keychains</div>
+          </div>
+          <div class="gallery-item">
+            <div class="gallery-overlay">Event Necklaces</div>
+          </div>
+          <div class="gallery-item">
+            <div class="gallery-overlay">Custom Logos</div>
+          </div>
+          <div class="gallery-item">
+            <div class="gallery-overlay">Promotional Items</div>
+          </div>
+          <div class="gallery-item">
+            <div class="gallery-overlay">Large Batch Runs</div>
+          </div>
+          <div class="gallery-item">
+            <div class="gallery-overlay">Custom Requests</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- HOW IT'S MADE / PROCESS -->
+      <section id="process">
+        <h2>How It’s Made</h2>
+        <div
+          class="gallery"
+          style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr))"
+        >
+          <div class="card" style="text-align: center">
+            <h3>1. Submit Your Design</h3>
+            <p>
+              Send us your STL, logo, sketch, or even just an idea. We’ll help
+              translate it into a printable design.
+            </p>
+          </div>
+          <div class="card" style="text-align: center">
+            <h3>2. Prep & Test</h3>
+            <p>
+              We optimize files for strength, consistency, and print quality,
+              then test before full production.
+            </p>
+          </div>
+          <div class="card" style="text-align: center">
+            <h3>3. Production Run</h3>
+            <p>
+              Your order is printed in controlled batches to ensure repeatable,
+              reliable results.
+            </p>
+          </div>
+          <div class="card" style="text-align: center">
+            <h3>4. Delivery</h3>
+            <p>
+              Finished products are packaged and ready for events, teams,
+              promotions, or distribution.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section id="contact">
+        <h2>Contact & Quotes</h2>
+        <div class="card">
+          <form
+            action="mailto:SouthernLayers3DPrinting@gmail.com"
+            method="POST"
+            enctype="multipart/form-data"
+          >
+            <input type="text" name="name" placeholder="Your Name" required />
+            <input
+              type="email"
+              name="email"
+              placeholder="Your Email"
+              required
+            />
+            <textarea
+              name="message"
+              rows="5"
+              placeholder="Tell us about your project"
+              required
+            ></textarea>
+            <input
+              type="file"
+              name="attachment"
+              accept=".stl,.obj,.step,.zip,.png,.jpg,.pdf"
+            />
+            <button type="submit" class="submit">Send Message</button>
+          </form>
+          <p style="margin-top: 2rem">
+            <strong>Rob Tipton, President</strong><br />
+            SouthernLayers3DPrinting@gmail.com<br />
+            803-696-7650
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <footer>© 2026 Southern Layers 3D Printing, LLC</footer>
+  </body>
+</html>
