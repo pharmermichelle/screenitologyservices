@@ -299,6 +299,12 @@
         );
         z-index: 0;
       }
+      /* DESKTOP: How It's Made – 2x2 grid */
+      @media (min-width: 900px) {
+        #process .gallery {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
     </style>
   </head>
   <body data-theme="dark">
