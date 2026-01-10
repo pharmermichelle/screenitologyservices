@@ -22,6 +22,25 @@
         --card: rgba(30, 54, 66, 0.7);
         --border: rgba(255, 255, 255, 0.12);
       }
+      /* ===== Fluid Typography ===== */
+
+      h1 {
+        font-size: clamp(2rem, 4vw, 3.25rem);
+      }
+
+      h2 {
+        font-size: clamp(1.6rem, 3vw, 2.4rem);
+      }
+
+      h3 {
+        font-size: clamp(1.1rem, 1.6vw, 1.4rem);
+      }
+
+      p,
+      li {
+        font-size: clamp(0.95rem, 1.1vw, 1.05rem);
+        line-height: 1.55;
+      }
 
       * {
         box-sizing: border-box;
@@ -123,6 +142,14 @@
       .card:hover {
         transform: translateY(-6px) rotateX(3deg);
         box-shadow: 0 40px 80px rgba(0, 0, 0, 0.35);
+      }
+      #process .card h3 {
+        font-size: clamp(1.1rem, 1.4vw, 1.35rem);
+      }
+
+      #process .card p {
+        font-size: clamp(0.9rem, 1.05vw, 1rem);
+        line-height: 1.45;
       }
 
       /* PROCESS SECTION */
@@ -303,6 +330,11 @@
       @media (min-width: 600px) {
         #process .gallery {
           grid-template-columns: repeat(4, 1fr);
+        }
+      }
+      @media (min-width: 600px) {
+        #process .card {
+          padding: 1.75rem;
         }
       }
     </style>
