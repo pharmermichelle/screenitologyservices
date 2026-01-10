@@ -299,18 +299,33 @@
       textarea::placeholder {
         color: rgba(255, 255, 255, 0.6);
       }
+      .form-intro {
+        margin-bottom: 1.75rem;
+        font-size: clamp(0.95rem, 1.1vw, 1.05rem);
+        opacity: 0.85;
+        max-width: 680px;
+      }
 
       .submit {
-        margin-top: 1rem;
+        margin-top: 1.75rem;
         align-self: flex-start;
         background: linear-gradient(135deg, var(--blue), var(--yellow));
         color: #000;
         border: none;
-        padding: 0.8rem 1.6rem;
+        padding: 1rem 2.4rem;
         border-radius: 999px;
-        font-weight: 700;
+        font-weight: 800;
+        font-size: 1.05rem;
         cursor: pointer;
+        box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
       }
+
+      .submit:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 22px 55px rgba(0, 0, 0, 0.6);
+      }
+
       /* ===== File Upload Styling ===== */
 
       .file-upload {
@@ -325,19 +340,20 @@
       }
 
       .file-label {
-        background: linear-gradient(135deg, var(--blue), var(--yellow));
-        color: #000;
-        padding: 0.6rem 1.4rem;
+        background: rgba(255, 255, 255, 0.08);
+        color: var(--text);
+        padding: 0.55rem 1.2rem;
         border-radius: 999px;
-        font-weight: 700;
+        font-weight: 600;
         cursor: pointer;
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        border: 1px dashed var(--border);
+        box-shadow: none;
+        transition: background 0.2s ease, border-color 0.2s ease;
       }
 
       .file-label:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+        background: rgba(255, 255, 255, 0.14);
+        border-color: rgba(255, 255, 255, 0.35);
       }
 
       .file-name {
@@ -347,6 +363,18 @@
         overflow: hidden;
         text-overflow: ellipsis;
         max-width: 240px;
+      }
+      .file-hint {
+        font-size: 0.8rem;
+        opacity: 0.6;
+      }
+      .file-upload {
+        flex-wrap: wrap;
+      }
+
+      .file-hint {
+        width: 100%;
+        margin-left: 0.25rem;
       }
 
       /* FILAMENT LAYER LINES */
@@ -372,6 +400,14 @@
       @media (min-width: 600px) {
         #process .card {
           padding: 1.75rem;
+        }
+      }
+      @media (hover: none) {
+        .card:hover,
+        .gallery-item:hover,
+        .submit:hover {
+          transform: none;
+          box-shadow: inherit;
         }
       }
     </style>
@@ -508,6 +544,11 @@
       <section id="contact">
         <h2>Contact & Quotes</h2>
         <div class="card">
+          <p class="form-intro">
+            Send us a message with your ideas and assets (if applicable). We’ll
+            follow up with a quote or next steps.
+          </p>
+
           <form
             action="mailto:SouthernLayers3DPrinting@gmail.com"
             method="POST"
@@ -529,6 +570,9 @@
             <div class="file-upload">
               <label for="attachment" class="file-label"> Upload File </label>
               <span class="file-name">No file selected</span>
+              <small class="file-hint"
+                >Optional — STL, images, or reference files</small
+              >
 
               <input
                 type="file"
