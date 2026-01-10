@@ -56,9 +56,10 @@
         backdrop-filter: blur(12px);
         background: linear-gradient(
           135deg,
-          rgba(47, 93, 115, 0.85),
-          rgba(242, 201, 76, 0.85)
+          color-mix(in srgb, var(--blue) 85%, transparent),
+          color-mix(in srgb, var(--yellow) 85%, transparent)
         );
+
         color: #fff;
         display: flex;
         justify-content: space-between;
@@ -203,11 +204,8 @@
         position: relative;
         height: 220px;
         border-radius: 16px;
-        background: linear-gradient(
-          135deg,
-          rgba(47, 93, 115, 0.85),
-          rgba(242, 201, 76, 0.85)
-        );
+        background: linear-gradient(135deg, var(--blue), var(--yellow));
+
         overflow: hidden;
         transform-style: preserve-3d;
         transition: transform 0.3s ease;
@@ -396,11 +394,8 @@
           class="card"
           style="
             text-align: center;
-            background: linear-gradient(
-              135deg,
-              rgba(47, 93, 115, 0.85),
-              rgba(242, 201, 76, 0.85)
-            );
+            background: linear-gradient(135deg, var(--blue), var(--yellow));
+
             color: #fff;
           "
         >
