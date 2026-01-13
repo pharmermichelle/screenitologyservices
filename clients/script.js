@@ -171,3 +171,24 @@ window.addEventListener("scroll", () => {
   const scrolled = (window.pageYOffset / windowHeight) * 100;
   progressBar.style.width = `${scrolled}%`;
 });
+// Mobile navigation toggle
+const navToggle = document.querySelector(".nav-toggle");
+const nav = document.querySelector("nav");
+
+navToggle.addEventListener("click", () => {
+  nav.classList.toggle("active");
+});
+
+// Close nav when clicking a link
+document.querySelectorAll("nav a").forEach((link) => {
+  link.addEventListener("click", () => {
+    nav.classList.remove("active");
+  });
+});
+
+// Close nav when clicking outside
+document.addEventListener("click", (e) => {
+  if (!nav.contains(e.target) && !navToggle.contains(e.target)) {
+    nav.classList.remove("active");
+  }
+});

@@ -842,3 +842,60 @@ input[name="business"] {
     grid-template-columns: 1fr;
   }
 }
+/* Mobile Navigation */
+.nav-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0.5rem;
+}
+
+@media (max-width: 768px) {
+  .nav-toggle {
+    display: block;
+  }
+
+  nav {
+    position: fixed;
+    top: 76px; /* Below header */
+    right: -100%;
+    width: 250px;
+    height: calc(100vh - 76px);
+    background: linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--blue) 95%, transparent),
+      color-mix(in srgb, var(--yellow) 95%, transparent)
+    );
+    backdrop-filter: blur(20px);
+    display: flex;
+    flex-direction: column;
+    padding: 2rem 0;
+    transition: right 0.3s ease;
+    box-shadow: -5px 0 20px rgba(0, 0, 0, 0.3);
+    z-index: 999;
+  }
+
+  nav.active {
+    right: 0;
+  }
+
+  nav a {
+    margin: 0;
+    padding: 1rem 2rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    transition: background 0.2s ease, padding-left 0.2s ease;
+  }
+
+  nav a:hover,
+  nav a.active {
+    background: rgba(255, 255, 255, 0.1);
+    padding-left: 2.5rem;
+  }
+
+  nav a::after {
+    display: none; /* Remove underline on mobile */
+  }
+}
