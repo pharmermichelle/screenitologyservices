@@ -1,20 +1,3 @@
-// File upload name display (supports multiple files)
-const fileInput = document.getElementById("attachment");
-const fileName = document.querySelector(".file-name");
-
-fileInput.addEventListener("change", () => {
-  const fileCount = fileInput.files.length;
-  fileName.dataset.count = fileCount;
-
-  if (fileCount === 0) {
-    fileName.textContent = "No file selected";
-  } else if (fileCount === 1) {
-    fileName.textContent = fileInput.files[0].name;
-  } else {
-    fileName.textContent = `${fileCount} files selected`;
-  }
-});
-
 // Format phone number as user types
 const phoneInput = document.querySelector('input[name="phone"]');
 phoneInput.addEventListener("input", (e) => {

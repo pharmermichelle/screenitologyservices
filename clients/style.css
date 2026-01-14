@@ -518,35 +518,62 @@ textarea::placeholder {
   flex-wrap: wrap;
 }
 
-.file-upload input[type="file"] {
-  display: none;
-}
-
-.file-label {
-  background: rgba(255, 255, 255, 0.08);
-  color: var(--text);
-  padding: 0.55rem 1.2rem;
-  border-radius: 999px;
-  font-weight: 600;
-  cursor: pointer;
-  border: 1px dashed var(--border);
-  transition: background 0.2s ease, border-color 0.2s ease;
-}
-
-.file-label:hover {
-  background: rgba(255, 255, 255, 0.14);
-  border-color: rgba(255, 255, 255, 0.35);
-}
-
-.file-name {
-  font-size: 0.95rem;
-  opacity: 0.8;
-}
-
 .file-hint {
   font-size: 0.8rem;
   opacity: 0.6;
   width: 100%;
+}
+.upload-btn {
+  display: inline-block;
+  padding: 0.6rem 1.4rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px dashed var(--border);
+  color: var(--text);
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.upload-btn:hover {
+  background: rgba(255, 255, 255, 0.18);
+  transform: translateY(-1px);
+}
+
+.upload-note {
+  font-size: 0.8rem;
+  opacity: 0.65;
+  margin-top: 0.25rem;
+}
+.form-status {
+  grid-column: 1 / -1;
+  margin-top: 0.75rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.form-status.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.form-status.success {
+  color: var(--yellow);
+}
+
+.form-status.error {
+  color: #ff6b6b;
+}
+
+/* Disabled submit button */
+.submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: none !important;
 }
 
 .submit {

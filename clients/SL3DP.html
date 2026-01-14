@@ -243,6 +243,14 @@
           <form id="quote-form" novalidate>
             <input
               type="text"
+              name="company_website"
+              tabindex="-1"
+              autocomplete="off"
+              style="display: none"
+            />
+
+            <input
+              type="text"
               name="firstname"
               placeholder="First Name"
               required
@@ -281,17 +289,12 @@
             ></textarea>
 
             <div class="file-upload">
-              <label for="attachment" class="file-label">Upload Pictures</label>
-              <span class="file-name">No file selected</span>
-              <small class="file-hint"
-                >Optional — STL files, reference images, logos, or
-                sketches</small
-              >
-              <div class="file-upload-alt">
+              <div class="file-upload-alt" style="grid-column: 1 / -1">
                 <p>
                   <strong>Optional:</strong> Upload reference files (STL,
                   images, logos)
                 </p>
+
                 <a
                   href="https://forms.gle/LiZDqs8FvrDeYpqQ7"
                   target="_blank"
@@ -299,6 +302,7 @@
                 >
                   Upload Files
                 </a>
+
                 <p class="upload-note">
                   Files open in a new tab and are securely sent to SL3D
                   Printing.
@@ -307,6 +311,11 @@
             </div>
 
             <button type="submit" class="submit">Send Quote Request</button>
+            <button type="submit" class="submit" id="submit-btn">
+              Send Quote Request
+            </button>
+
+            <div id="form-status" class="form-status" aria-live="polite"></div>
           </form>
 
           <p style="margin-top: 2rem">
@@ -326,22 +335,50 @@
         emailjs.init("c4SA3HrGy9F387thC");
       })();
 
-      document
-        .getElementById("quote-form")
-        .addEventListener("submit", function (e) {
-          e.preventDefault();
+      const form = document.getElementById("quote-form");
+      const submitBtn = document.getElementById("submit-btn");
+      const statusBox = document.getElementById("form-status");
 
-          emailjs.sendForm("service_t93osje", "template_k5iis6e", this).then(
-            function () {
-              alert("Quote request sent successfully!");
-              document.getElementById("quote-form").reset();
-            },
-            function (error) {
-              console.error("EmailJS error:", error);
-              alert("Something went wrong. Please try again.");
-            }
-          );
-        });
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        // Spam honeypot check
+        if (form.company_website.value !== "") {
+          return; // silently fail for bots
+        }
+
+        // Lock UI
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Sending...";
+        statusBox.textContent = "";
+        statusBox.className = "form-status";
+
+        emailjs.sendForm("service_t93osje", "template_k5iis6e", form).then(
+          function () {
+            statusBox.textContent =
+              "Thanks! Your quote request was sent successfully.";
+            statusBox.classList.add("visible", "success");
+
+            submitBtn.textContent = "Sent ✓";
+            form.reset();
+
+            setTimeout(() => {
+              submitBtn.disabled = false;
+              submitBtn.textContent = "Send Quote Request";
+            }, 2500);
+          },
+          function (error) {
+            console.error("EmailJS error:", error);
+
+            statusBox.textContent =
+              "Something went wrong. Please try again or email us directly.";
+            statusBox.classList.add("visible", "error");
+
+            submitBtn.disabled = false;
+            submitBtn.textContent = "Send Quote Request";
+          }
+        );
+      });
     </script>
 
     <script src="script.js"></script>
