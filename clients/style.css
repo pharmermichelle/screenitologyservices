@@ -928,3 +928,10 @@ input[name="business"] {
     display: none; /* Remove underline on mobile */
   }
 }
+.file-upload-alt {
+  margin-top: 1rem;
+  padding: 1rem 1.25rem;
+  border: 1px dashed rgba(255, 255, 255, 0.25);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.03);
+}
