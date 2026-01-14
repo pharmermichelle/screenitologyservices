@@ -240,11 +240,7 @@
             follow up with a quote or next steps.
           </p>
 
-          <form
-            action="mailto:Support@SL3DPrinting.com"
-            method="POST"
-            enctype="multipart/form-data"
-          >
+          <form id="quote-form" novalidate>
             <input
               type="text"
               name="firstname"
@@ -291,13 +287,23 @@
                 >Optional — STL files, reference images, logos, or
                 sketches</small
               >
-              <input
-                type="file"
-                id="attachment"
-                name="attachment"
-                accept=".stl,.obj,.step,.zip,.png,.jpg,.jpeg,.pdf"
-                multiple
-              />
+              <div class="file-upload-alt">
+                <p>
+                  <strong>Optional:</strong> Upload reference files (STL,
+                  images, logos)
+                </p>
+                <a
+                  href="https://forms.gle/LiZDqs8FvrDeYpqQ7"
+                  target="_blank"
+                  class="upload-btn"
+                >
+                  Upload Files
+                </a>
+                <p class="upload-note">
+                  Files open in a new tab and are securely sent to SL3D
+                  Printing.
+                </p>
+              </div>
             </div>
 
             <button type="submit" class="submit">Send Quote Request</button>
@@ -313,6 +319,30 @@
     </main>
 
     <footer>© 2026 Southern Layers 3D Printing, LLC</footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+    <script>
+      (function () {
+        emailjs.init("c4SA3HrGy9F387thC");
+      })();
+
+      document
+        .getElementById("quote-form")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          emailjs.sendForm("service_t93osje", "template_k5iis6e", this).then(
+            function () {
+              alert("Quote request sent successfully!");
+              document.getElementById("quote-form").reset();
+            },
+            function (error) {
+              console.error("EmailJS error:", error);
+              alert("Something went wrong. Please try again.");
+            }
+          );
+        });
+    </script>
 
     <script src="script.js"></script>
   </body>
